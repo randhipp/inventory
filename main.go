@@ -106,7 +106,7 @@ func initDatabase() {
 			Password: string(hashedPassword),
 		},
 	}
-	database.DBConn.Where("1 = 1").Delete(&users)
+	database.DBConn.Unscoped().Delete(&models.User{}, "email LIKE ?", "%")
 	database.DBConn.Create(&users)
 }
 

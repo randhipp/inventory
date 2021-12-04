@@ -2,10 +2,9 @@ package models
 
 type User struct {
 	BaseModel
-	Name     string     `json:"name"`
-	Email    string     `gorm:"unique" json:"email"`
-	Password string     `gorm:"varchar(60)" json:"-"`
-	Merchant []Merchant `json:"merchants,omitempty"`
+	Name     string `json:"name"`
+	Email    string `gorm:"unique" json:"email"`
+	Password string `gorm:"varchar(60)" json:"-"`
 }
 
 type UserRequest struct {
