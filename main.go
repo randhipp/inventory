@@ -55,6 +55,21 @@ func setupRoutes(app *fiber.App) {
 	app.Post("/api/v1/users", UserHandler.NewUser)
 	app.Patch("/api/v1/users/:id", UserHandler.UpdateUser)
 	app.Delete("/api/v1/users/:id", UserHandler.DeleteUser)
+
+	CartHandler := handlers.CartHandler{
+		DB: database.DBConn,
+	}
+	PaymentHandler := handlers.PaymentHandler{
+		DB: database.DBConn,
+	}
+	WebhookHandler := handlers.WebhookHandler{
+		DB: database.DBConn,
+	}
+
+	// we will simulate user add to cart and payment using this 3 API
+	app.Post("/api/v1/cart", CartHandler.AddNewItemToCart)
+	app.Post("/api/v1/cart/:cartId/pay", PaymentHandler.NewPayment)
+	app.Post("/api/v1/webhooks/payments/:paymentId", WebhookHandler.NewPaymentWebhook)
 }
 
 func initDatabase() {
