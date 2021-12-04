@@ -22,9 +22,12 @@ require (
 
 require (
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/gofiber/jwt/v3 v3.2.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.4.0
 	github.com/vcraescu/go-paginator/v2 v2.0.0
 	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
 )
+
+require github.com/golang-jwt/jwt/v4 v4.1.0 // indirect

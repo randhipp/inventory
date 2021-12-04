@@ -12,6 +12,7 @@ import (
 	"github.com/randhipp/inventory/handlers"
 	"github.com/randhipp/inventory/models"
 	"github.com/randhipp/inventory/services"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -74,6 +75,39 @@ func initDatabase() {
 		fmt.Println(err)
 		panic("failed to migrate User")
 	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println(err)
+	}
+	var users = []models.User{
+		{
+			Name:     "admin1",
+			Email:    "admin1@admin.com",
+			Password: string(hashedPassword),
+		},
+		{
+			Name:     "user1",
+			Email:    "user1@user.com",
+			Password: string(hashedPassword),
+		},
+		{
+			Name:     "user2",
+			Email:    "user2@user.com",
+			Password: string(hashedPassword),
+		},
+		{
+			Name:     "user3",
+			Email:    "user3@user.com",
+			Password: string(hashedPassword),
+		},
+		{
+			Name:     "user4",
+			Email:    "user4@user.com",
+			Password: string(hashedPassword),
+		},
+	}
+	database.DBConn.Where("1 = 1").Delete(&users)
+	database.DBConn.Create(&users)
 }
 
 func main() {
