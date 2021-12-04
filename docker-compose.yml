@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  mariadb:
+    image : yobasystems/alpine-mariadb
+    container_name: mariadb
+    environment:
+      - MYSQL_USER=dev
+      - MYSQL_DATABASE=fiberpos
+      - MYSQL_PASSWORD=dev
+    ports:
+      - 3366:3306
+    restart: unless-stopped
