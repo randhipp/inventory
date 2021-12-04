@@ -23,7 +23,7 @@ type UserHandler struct {
 
 func (h UserHandler) GetUsers(c *fiber.Ctx) error {
 	var users []models.User
-	q := h.DB.Preload("Merchant").Model(models.User{})
+	q := h.DB.Model(models.User{})
 
 	limit, err := strconv.Atoi(c.Query("limit"))
 	if err != nil {
