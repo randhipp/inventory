@@ -138,8 +138,8 @@ func initDatabase() {
 	}
 	var users = []models.User{
 		{
-			Name:     "admin1",
-			Email:    "admin1@admin.com",
+			Name:     "admin",
+			Email:    "admin@admin.com",
 			Password: string(hashedPassword),
 		},
 		{

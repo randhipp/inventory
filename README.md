@@ -46,8 +46,7 @@ go run --race race.go
   - If user 1 not continue the checkout and not doing any payment, after the expired time is passing, the item will back available.
 
   User 2 POV
-  - user 2 still got the item to cart
-  - will fail at payment flow ( before payment can continue, we check again the qty )
+  - user 2 will not success add item to cart
 
   User 3 POV
   - user 3 will not success add item to cart
@@ -56,14 +55,53 @@ go run --race race.go
   - Stock quantity will be match and no race condition
   
   Cons :
-  - Bad User Experience on user 2, they will asume they got the item, but fail when doing some payment.
   - If the expired time is too long and user 1 abandoned the cart, we may lose sales from user 2.
   - Business will lose sales, because item can't be back ordered.
 
+### Run the Demo
 
-#### Option 2 : Auto change transaction for the losing customer to pre-order ( of course with terms updated/stated in the company t&c )
+#### Database
 
+we are using mariadb, database migration and seed for initial data on app run
 
+start db using local docker
+```bash
+docker-compose up -d
+```
 
-Do a locking mechanism
-- client add item to cart
+db will be accessible on `localhost:3366` with user:pass `dev:dev`
+
+#### Authentication
+
+All route protected by JWT, except `auth`
+
+login first using this credential to get token on `{{url}}/api/v1/auth`
+```
+email : admin@admin.com
+pass : password123
+```
+#### Run on localhost
+
+- clone this repo or run : `go get github.com/randhipp/inventory`
+- copy .example.env to .env
+  
+
+```bash
+❯ go run main.go
+Connection Opened to Database
+Database Migrated & Data Seeded
+
+ ┌───────────────────────────────────────────────────┐ 
+ │                   Fiber v2.22.0                   │ 
+ │               http://127.0.0.1:3000               │ 
+ │       (bound on host 0.0.0.0 and port 3000)       │ 
+ │                                                   │ 
+ │ Handlers ............ 25  Processes ........... 1 │ 
+ │ Prefork ....... Disabled  PID ............. 18968 │ 
+ └───────────────────────────────────────────────────┘ 
+```
+
+#### Documentation
+
+All API route documented on POSTMAN with example respond ( success & err )
+Download [Postman Collection Here](API.postman_collection.json)

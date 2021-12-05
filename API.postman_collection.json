@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "8f07b981-261b-4395-b848-081d9e29ffe0",
+		"name": "POS API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "Auth",
+							"item": [
+								{
+									"name": "Login / Get Token",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Set JWT Token\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.environment.set(\"token\", jsonData.token);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"user1@user.com\",\n    \"password\": \"password123\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/{{version}}/auth",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"{{version}}",
+												"auth"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Login / Get Token",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "text"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"ddd@b.com\",\n    \"password\": \"bbbbbbbb\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/{{version}}/auth",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"{{version}}",
+														"auth"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Sun, 28 Nov 2021 11:06:03 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Content-Length",
+													"value": "251"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"status\": \"success\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRkZEBiLmNvbSIsImlkIjoiOWY1YjEwOTUtM2JhZC00ZTg5LTkwZDAtZjU2OWQwNjlkOWZiIiwibmFtZSI6ImFkbWluMjIyMjIzMSIsIm5iZiI6MTQ0NDQ3ODQwMH0.c9eAjdlizOlST8Sz71CDQxoXxQa0VfAYyxCGylNKts8\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Cart",
+							"item": [
+								{
+									"name": "New Cart",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"product_id\": \"8d9b48ec-aa7b-40ef-87a3-7a21c9e9f245\",\n    \"qty\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{url}}/api/{{version}}/cart",
+											"host": [
+												"{{url}}"
+											],
+											"path": [
+												"api",
+												"{{version}}",
+												"cart"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "stock unavailable",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"product_id\": \"f2d3e7a8-c46c-499d-9d1a-4e8cf21964e5\",\n    \"qty\": 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/{{version}}/cart",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"{{version}}",
+														"cart"
+													]
+												}
+											},
+											"status": "Unprocessable Entity",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Sun, 05 Dec 2021 15:55:48 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Content-Length",
+													"value": "54"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"message\": \"stock unavailable\",\n    \"field\": \"\",\n    \"type\": null\n}"
+										},
+										{
+											"name": "200 OK",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"product_id\": \"fd67e394-893c-4f2b-a46d-9cabbc504ffa\",\n    \"qty\": 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{url}}/api/{{version}}/cart",
+													"host": [
+														"{{url}}"
+													],
+													"path": [
+														"api",
+														"{{version}}",
+														"cart"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Sun, 05 Dec 2021 16:57:17 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Content-Length",
+													"value": "244"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"status\": \"success\",\n    \"cart\": {\n        \"id\": \"40dfc637-f1a8-4490-a525-2074ba3ba390\",\n        \"createdAt\": \"2021-12-05T23:57:17.837+07:00\",\n        \"updatedAt\": \"2021-12-05T23:57:17.844+07:00\",\n        \"deletedAt\": null,\n        \"user_id\": \"e262531b-33a6-4d09-ace2-fb6378e2e979\",\n        \"total\": 25000000\n    }\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
