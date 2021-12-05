@@ -30,4 +30,7 @@ require (
 	golang.org/x/crypto v0.0.0-20211202192323-5770296d904e
 )
 
-require github.com/golang-jwt/jwt/v4 v4.1.0 // indirect
+require (
+	github.com/golang-jwt/jwt/v4 v4.1.0 // indirect
+	github.com/robfig/cron/v3 v3.0.1
+)

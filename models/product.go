@@ -31,7 +31,7 @@ type Stock struct {
 }
 
 // this will be database for reserved item
-type StockReserved struct {
+type ReservedStock struct {
 	BaseModel
 	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"product_id"`
 	CartID    uuid.UUID `gorm:"column:cart_id;type:char(36)" json:"cart_id"`

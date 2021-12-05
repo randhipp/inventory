@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/robfig/cron/v3"
 
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/joho/godotenv"
@@ -57,11 +59,12 @@ func setupRoutes(app *fiber.App) {
 	app.Patch("/api/v1/users/:id", UserHandler.UpdateUser)
 	app.Delete("/api/v1/users/:id", UserHandler.DeleteUser)
 
-	CartHandler := handlers.CartHandler{
+	ProductService := services.ProductService{
 		DB: database.DBConn,
-		Product: services.ProductService{
-			DB: database.DBConn,
-		},
+	}
+	CartHandler := handlers.CartHandler{
+		DB:      database.DBConn,
+		Product: ProductService,
 	}
 	OrderHandler := handlers.OrderHandler{
 		DB: database.DBConn,
@@ -114,7 +117,7 @@ func initDatabase() {
 		fmt.Println(err)
 		panic("failed to migrate Stock")
 	}
-	err = database.DBConn.AutoMigrate(&models.StockReserved{})
+	err = database.DBConn.AutoMigrate(&models.ReservedStock{})
 	if err != nil {
 		fmt.Println(err)
 		panic("failed to migrate StockReserved")
@@ -185,16 +188,33 @@ func initDatabase() {
 	database.DBConn.Create(&stocks)
 	database.DBConn.Unscoped().Delete(&models.CartItem{}, "id LIKE ?", "%")
 	database.DBConn.Unscoped().Delete(&models.Cart{}, "id LIKE ?", "%")
-	database.DBConn.Unscoped().Delete(&models.StockReserved{}, "id LIKE ?", "%")
+	database.DBConn.Unscoped().Delete(&models.ReservedStock{}, "id LIKE ?", "%")
 }
 
 func main() {
+	var cx *cron.Cron
+
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 	app := fiber.New()
 	initDatabase()
+
+	cronTime := "@every 10s"
+	cx = cron.New()
+	_, _ = cx.AddFunc(cronTime, func() {
+		log.Println("CRON start")
+		t := time.Now()
+		ProductService := services.ProductService{
+			DB: database.DBConn,
+		}
+		ProductService.ResetStock(t)
+		log.Println("CRON finished")
+	})
+	cx.Start()
+	// End Cron
+
 	setupRoutes(app)
 	app.Listen(":3000")
 }

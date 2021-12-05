@@ -101,7 +101,7 @@ func (h CartHandler) AddNewItemToCart(c *fiber.Ctx) error {
 		tx.Save(&stock)
 
 		// add stock to reserved table, we can revert back using scheduler for each amount of time
-		reservedStock := models.StockReserved{
+		reservedStock := models.ReservedStock{
 			ProductID: product.ID,
 			CartID:    cart.ID,
 			Quantity:  cartItem.Quantity,
