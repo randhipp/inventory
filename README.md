@@ -9,7 +9,8 @@
 
 1. You got a race condition on the checkout and payment flow.
 2. Maybe, No stock check before user do a payment.
-3. Qty should not have a negative value, although some business allow this behaviour. 
+3. Not using DB transaction, so anything db action fail in a flow, data are not rolling back.
+4. Qty should not have a negative value, although some business allow this behaviour. 
 
 ( On my previous company, we can have negative stock so customer still can do a payment and company not loosing some sales. Company can order it and said to customer will delivery it 2-3 days again )
 

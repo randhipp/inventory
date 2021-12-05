@@ -13,7 +13,7 @@ type UserService struct {
 }
 
 func (s UserService) GetUserByID(user *models.User) error {
-	if err := s.DB.Preload("Merchant").First(user).Error; err != nil {
+	if err := s.DB.First(user).Error; err != nil {
 		fmt.Println("GetUserByID Err")
 		fmt.Println(err)
 		return err
@@ -22,7 +22,7 @@ func (s UserService) GetUserByID(user *models.User) error {
 }
 
 func (s UserService) GetUserByEmail(user *models.User) error {
-	if err := s.DB.Preload("Merchant").First(user, "email = ?", user.Email).Error; err != nil {
+	if err := s.DB.First(user, "email = ?", user.Email).Error; err != nil {
 		fmt.Println("GetUserByID Err")
 		fmt.Println(err)
 		return err

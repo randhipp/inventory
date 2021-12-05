@@ -10,31 +10,31 @@ type Product struct {
 
 type Order struct {
 	BaseModel
-	Total float64 `gorm:"total" json:"total"`
+	UserID uuid.UUID `gorm:"column:user_id;type:char(36)" json:"user_id"`
+	Total  float64   `gorm:"total" json:"total"`
 }
 
 type OrderItem struct {
 	BaseModel
-	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"productId"`
+	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"product_id"`
 	Quantity  int64     `gorm:"qty" json:"quantity"`
 	Price     float64   `gorm:"price" json:"price"`
 	Disc      float64   `gorm:"disc" json:"disc"`
-	Total     float64   `gorm:"totalPrice" json:"totalPrice"`
+	Total     float64   `gorm:"total_price" json:"total_price"`
 }
 
 type Stock struct {
 	BaseModel
-	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"productId"`
-	Quantity  int64     `gorm:"qty" json:"quantity"`
+	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"product_id"`
+	Quantity  int64     `gorm:"qty" json:"qty"`
 	Remark    string    `json:"remark"`
 }
 
 // this will be database for reserved item
 type StockReserved struct {
 	BaseModel
-	UserID    uuid.UUID `gorm:"column:user_id;type:char(36)" json:"user_id"`
-	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"productId"`
-	OrderId   uuid.UUID `gorm:"column:order_id;type:char(36)" json:"orderId"`
-	Quantity  int64     `gorm:"qty" json:"quantity"`
+	ProductID uuid.UUID `gorm:"column:product_id;type:char(36)" json:"product_id"`
+	CartID    uuid.UUID `gorm:"column:cart_id;type:char(36)" json:"cart_id"`
+	Quantity  int64     `gorm:"qty" json:"qty"`
 	Remark    string    `json:"remark"`
 }

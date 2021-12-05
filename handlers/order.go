@@ -5,11 +5,11 @@ import (
 	"gorm.io/gorm"
 )
 
-type PaymentHandler struct {
+type OrderHandler struct {
 	DB *gorm.DB
 }
 
-func (h PaymentHandler) NewPayment(c *fiber.Ctx) error {
+func (h OrderHandler) NewOrder(c *fiber.Ctx) error {
 
 	return nil
 }

@@ -6,7 +6,6 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/google/uuid"
 
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/joho/godotenv"
@@ -60,8 +59,11 @@ func setupRoutes(app *fiber.App) {
 
 	CartHandler := handlers.CartHandler{
 		DB: database.DBConn,
+		Product: services.ProductService{
+			DB: database.DBConn,
+		},
 	}
-	PaymentHandler := handlers.PaymentHandler{
+	OrderHandler := handlers.OrderHandler{
 		DB: database.DBConn,
 	}
 	WebhookHandler := handlers.WebhookHandler{
@@ -70,7 +72,7 @@ func setupRoutes(app *fiber.App) {
 
 	// we will simulate user add to cart and payment using this 3 API
 	app.Post("/api/v1/cart", CartHandler.AddNewItemToCart)
-	app.Post("/api/v1/cart/:cartId/pay", PaymentHandler.NewPayment)
+	app.Post("/api/v1/cart/:cartId/checkout", OrderHandler.NewOrder)
 	app.Post("/api/v1/webhooks/payments/:paymentId", WebhookHandler.NewPaymentWebhook)
 }
 
@@ -95,27 +97,37 @@ func initDatabase() {
 	err = database.DBConn.AutoMigrate(&models.Product{})
 	if err != nil {
 		fmt.Println(err)
-		panic("failed to migrate User")
+		panic("failed to migrate Product")
 	}
 	err = database.DBConn.AutoMigrate(&models.Order{})
 	if err != nil {
 		fmt.Println(err)
-		panic("failed to migrate User")
+		panic("failed to migrate Order")
 	}
 	err = database.DBConn.AutoMigrate(&models.OrderItem{})
 	if err != nil {
 		fmt.Println(err)
-		panic("failed to migrate User")
+		panic("failed to migrate OrderItem")
 	}
 	err = database.DBConn.AutoMigrate(&models.Stock{})
 	if err != nil {
 		fmt.Println(err)
-		panic("failed to migrate User")
+		panic("failed to migrate Stock")
 	}
 	err = database.DBConn.AutoMigrate(&models.StockReserved{})
 	if err != nil {
 		fmt.Println(err)
-		panic("failed to migrate User")
+		panic("failed to migrate StockReserved")
+	}
+	err = database.DBConn.AutoMigrate(&models.Cart{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate Cart")
+	}
+	err = database.DBConn.AutoMigrate(&models.CartItem{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate CartItem")
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	if err != nil {
@@ -156,15 +168,12 @@ func initDatabase() {
 		Name:  "Apple iPhone 13 Pro Max",
 		Price: 25000000,
 	}
-	productDemo.ID, err = uuid.Parse("3829cf54-2680-4728-a53f-7cea064f12be")
-	if err != nil {
-		fmt.Println(err)
-		panic("failed to parse UUID")
-	}
 	var products = []models.Product{productDemo}
 
 	database.DBConn.Unscoped().Delete(&models.Product{}, "name LIKE ?", "%")
 	database.DBConn.Create(&products)
+	database.DBConn.First(&productDemo)
+	fmt.Printf("use this product_id to test API : %s", productDemo.ID)
 
 	// seed for stock
 	stock := models.Stock{
@@ -174,6 +183,9 @@ func initDatabase() {
 	var stocks = []models.Stock{stock}
 	database.DBConn.Unscoped().Delete(&models.Stock{}, "id LIKE ?", "%")
 	database.DBConn.Create(&stocks)
+	database.DBConn.Unscoped().Delete(&models.Cart{}, "id LIKE ?", "%")
+	database.DBConn.Unscoped().Delete(&models.CartItem{}, "id LIKE ?", "%")
+	database.DBConn.Unscoped().Delete(&models.StockReserved{}, "id LIKE ?", "%")
 }
 
 func main() {
