@@ -44,6 +44,9 @@ func (h CartHandler) AddNewItemToCart(c *fiber.Ctx) error {
 	err := h.Product.GetProductById(&product)
 	if err != nil {
 		fmt.Println(err)
+		return c.Status(fiber.ErrUnprocessableEntity.Code).JSON(models.Error{
+			Message: "product unavailable",
+		})
 	}
 
 	stock := models.Stock{
