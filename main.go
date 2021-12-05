@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
+
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/joho/godotenv"
 	"github.com/randhipp/inventory/database"
@@ -90,6 +92,31 @@ func initDatabase() {
 		fmt.Println(err)
 		panic("failed to migrate User")
 	}
+	err = database.DBConn.AutoMigrate(&models.Product{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate User")
+	}
+	err = database.DBConn.AutoMigrate(&models.Order{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate User")
+	}
+	err = database.DBConn.AutoMigrate(&models.OrderItem{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate User")
+	}
+	err = database.DBConn.AutoMigrate(&models.Stock{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate User")
+	}
+	err = database.DBConn.AutoMigrate(&models.StockReserved{})
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to migrate User")
+	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte("password123"), bcrypt.DefaultCost)
 	if err != nil {
 		fmt.Println(err)
@@ -123,6 +150,30 @@ func initDatabase() {
 	}
 	database.DBConn.Unscoped().Delete(&models.User{}, "email LIKE ?", "%")
 	database.DBConn.Create(&users)
+
+	// seed for product
+	productDemo := models.Product{
+		Name:  "Apple iPhone 13 Pro Max",
+		Price: 25000000,
+	}
+	productDemo.ID, err = uuid.Parse("3829cf54-2680-4728-a53f-7cea064f12be")
+	if err != nil {
+		fmt.Println(err)
+		panic("failed to parse UUID")
+	}
+	var products = []models.Product{productDemo}
+
+	database.DBConn.Unscoped().Delete(&models.Product{}, "name LIKE ?", "%")
+	database.DBConn.Create(&products)
+
+	// seed for stock
+	stock := models.Stock{
+		ProductID: productDemo.ID,
+		Quantity:  1,
+	}
+	var stocks = []models.Stock{stock}
+	database.DBConn.Unscoped().Delete(&models.Stock{}, "id LIKE ?", "%")
+	database.DBConn.Create(&stocks)
 }
 
 func main() {
