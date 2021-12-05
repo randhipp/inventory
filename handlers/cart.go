@@ -93,6 +93,8 @@ func (h CartHandler) AddNewItemToCart(c *fiber.Ctx) error {
 			})
 			return err
 		}
+		cart.Total = newItem.Total
+		tx.Updates(&cart)
 
 		// reduce stock
 		fmt.Println(stock)
