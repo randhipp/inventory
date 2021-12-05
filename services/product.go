@@ -44,7 +44,17 @@ func (s ProductService) ResetStock(t time.Time) {
 		}
 		_ = s.GetStockByProductId(&stock)
 		stock.Quantity = stock.Quantity + reservedStock.Quantity
-		s.DB.Updates(&stock)
-		s.DB.Delete(&reservedStock)
+		s.DB.Transaction(func(tx *gorm.DB) error {
+			// do some database operations in the transaction (use 'tx' from this point, not 'db')
+			if err := tx.Updates(&stock).Error; err != nil {
+				// return any error will rollback
+				return err
+			}
+			if err := tx.Delete(&reservedStock).Error; err != nil {
+				return err
+			}
+			return nil
+		})
+
 	}
 }
