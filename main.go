@@ -183,8 +183,8 @@ func initDatabase() {
 	var stocks = []models.Stock{stock}
 	database.DBConn.Unscoped().Delete(&models.Stock{}, "id LIKE ?", "%")
 	database.DBConn.Create(&stocks)
-	database.DBConn.Unscoped().Delete(&models.Cart{}, "id LIKE ?", "%")
 	database.DBConn.Unscoped().Delete(&models.CartItem{}, "id LIKE ?", "%")
+	database.DBConn.Unscoped().Delete(&models.Cart{}, "id LIKE ?", "%")
 	database.DBConn.Unscoped().Delete(&models.StockReserved{}, "id LIKE ?", "%")
 }
 
