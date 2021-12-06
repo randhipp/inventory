@@ -218,5 +218,5 @@ func main() {
 	// End Cron
 
 	setupRoutes(app)
-	app.Listen(":3000")
+	app.Listen(":" + os.Getenv("PORT"))
 }

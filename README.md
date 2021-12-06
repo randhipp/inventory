@@ -60,6 +60,8 @@ go run --race race.go
 
 ### Run the Demo
 
+On this demo we use the option 1
+
 #### Database
 
 we are using mariadb, database migration and seed for initial data on app run
