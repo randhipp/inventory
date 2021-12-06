@@ -62,6 +62,12 @@ go run --race race.go
 
 On this demo we use the option 1
 
+you can run local using this step or go to public demo on : 
+
+`http://fiberpos.herokuapp.com:3000/`
+
+or click [here](http://fiberpos.herokuapp.com:3000/)
+
 #### Database
 
 we are using mariadb, database migration and seed for initial data on app run

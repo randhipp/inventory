@@ -44,13 +44,22 @@ func (h CartHandler) AddNewItemToCart(c *fiber.Ctx) error {
 	err := h.Product.GetProductById(&product)
 	if err != nil {
 		fmt.Println(err)
-		return c.Status(fiber.ErrUnprocessableEntity.Code).JSON(models.Error{
-			Message: "product unavailable",
-		})
+
+		// we will enable any product id will match the first product on this demo which is iphone 13 pro max
+		product = models.Product{}
+		product.Name = "Apple iPhone 13 Pro Max"
+		err = h.Product.GetDemoProduct(&product)
+		if err != nil {
+			fmt.Println(err)
+		}
+		// return c.Status(fiber.ErrUnprocessableEntity.Code).JSON(models.Error{
+		// 	Message: "product unavailable",
+		// })
 	}
+	fmt.Println(product)
 
 	stock := models.Stock{
-		ProductID: cartItem.ProductID,
+		ProductID: product.ID,
 	}
 	err = h.Product.GetStockByProductId(&stock)
 	if err != nil {

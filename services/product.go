@@ -14,6 +14,15 @@ type ProductService struct {
 	DB *gorm.DB
 }
 
+func (s ProductService) GetDemoProduct(product *models.Product) error {
+	if err := s.DB.First(product).Error; err != nil {
+		fmt.Println("GetDemoProduct Err")
+		fmt.Println(err)
+		return err
+	}
+	return nil
+}
+
 func (s ProductService) GetProductById(product *models.Product) error {
 	if err := s.DB.First(product).Error; err != nil {
 		fmt.Println("GetProductById Err")
