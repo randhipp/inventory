@@ -81,12 +81,17 @@ func setupRoutes(app *fiber.App) {
 
 func initDatabase() {
 	var err error
-	dsn := fmt.Sprintf("%v:%v@%v/%v?multiStatements=true&parseTime=true",
-		os.Getenv("DB_USERNAME"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOSTNAME"),
-		os.Getenv("DB_NAME"),
-	)
+	var dsn string
+	if os.Getenv("ENV") == "heroku" {
+		dsn = os.Getenv("CLEARDB_DATABASE_URL")
+	} else {
+		dsn = fmt.Sprintf("%v:%v@%v/%v?multiStatements=true&parseTime=true",
+			os.Getenv("DB_USERNAME"),
+			os.Getenv("DB_PASSWORD"),
+			os.Getenv("DB_HOSTNAME"),
+			os.Getenv("DB_NAME"),
+		)
+	}
 	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
