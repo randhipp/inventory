@@ -198,7 +198,12 @@ func main() {
 	if err != nil {
 		log.Println("Error loading .env file")
 	}
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ReadTimeout:  30 * time.Second,
+		WriteTimeout: 30 * time.Second,
+		IdleTimeout:  30 * time.Second,
+		AppName:      "FiberPos App v0.0.1",
+	})
 	initDatabase()
 
 	// this only for demo purpose, we can set to 10m or 1h etc
