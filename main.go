@@ -201,7 +201,9 @@ func main() {
 	app := fiber.New()
 	initDatabase()
 
+	// this only for demo purpose, we can set to 10m or 1h etc
 	cronTime := "@every 10s"
+
 	cx = cron.New()
 	_, _ = cx.AddFunc(cronTime, func() {
 		log.Println("CRON start")
