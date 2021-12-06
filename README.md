@@ -60,7 +60,7 @@ go run --race race.go
 
 ### Run the Demo
 
-On this demo we use the option 1
+On this demo we use the option 1, with scheduler set to 10s ( to reset reserved item )
 
 you can run local using this step or go to public demo on : 
 
