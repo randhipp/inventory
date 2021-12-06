@@ -56,7 +56,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"email\": \"user1@user.com\",\n    \"password\": \"password123\"\n}",
+											"raw": "{\n    \"email\": \"admin@admin.com\",\n    \"password\": \"password123\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -157,7 +157,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"product_id\": \"8d9b48ec-aa7b-40ef-87a3-7a21c9e9f245\",\n    \"qty\": 1\n}",
+											"raw": "{\n    \"product_id\": \"fd67e394-893c-4f2b-a46d-9cabbc504ffa\",\n    \"qty\": 1\n}",
 											"options": {
 												"raw": {
 													"language": "json"

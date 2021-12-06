@@ -64,9 +64,9 @@ On this demo we use the option 1
 
 you can run local using this step or go to public demo on : 
 
-`http://fiberpos.herokuapp.com:3000/`
+`http://fiberpos.primeracloud.com`
 
-or click [here](http://fiberpos.herokuapp.com:3000/)
+or click [here](http://fiberpos.primeracloud.com)
 
 #### Database
 
